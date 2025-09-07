@@ -1,0 +1,70 @@
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simulación de Transacciones - Casino Virtual AND</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="Union.css" />
+</head>
+<body id="top">
+
+  <nav class="navbar" role="navigation" aria-label="Menú principal">
+  <div class="navbar-left">
+    <a href="Inicio.html">
+      <img src="logo.png" alt="Logo Casino" class="navbar-logo">
+    </a>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="Perfil.html">Perfil</a></li>
+    <li><a href="Reglas.html">Reglas</a></li>
+    <li><a href="Info.html">Contacto</a></li>
+  </ul>
+
+</nav>
+
+  <main class="container transacciones-container">
+    <h1 class="main-title">Simulación de Transacciones</h1>
+    <p class="intro">Deposita o retira fondos de forma simulada. El saldo se actualiza en pantalla.</p>
+
+    <section class="card-block saldo-panel" aria-labelledby="saldo-actual-titulo">
+      <h2 id="saldo-actual-titulo" class="section-title">Saldo actual</h2>
+      <div id="saldo-actual" class="saldo-valor" aria-live="polite" aria-atomic="true"> 1.500.000 CLP</div>
+    </section>
+
+    <div class="row g-4 mt-1">
+      <div class="col-12 col-lg-6">
+        <section class="card-block">
+          <h3 class="section-title">Ingresar dinero</h3>
+          <form id="form-ingresar" class="trans-form" novalidate>
+            <label for="monto-ingresar" class="form-label">Monto a ingresar (CLP)</label>
+            <input type="number" id="monto-ingresar" class="form-control"
+                   placeholder="Ej: 50.00" min="0.01" step="0.01" required />
+            <button type="submit" class="btn btn-casino mt-3">Ingresar</button>
+            <p id="msg-ingresar" class="feedback" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <section class="card-block">
+          <h3 class="section-title">Retirar dinero</h3>
+          <form id="form-retirar" class="trans-form" novalidate>
+            <label for="monto-retirar" class="form-label">Monto a retirar (CLP)</label>
+            <input type="number" id="monto-retirar" class="form-control"
+                   placeholder="Ej: 25.00" min="0.01" step="0.01" required />
+            <button type="submit" class="btn btn-casino mt-3">Retirar</button>
+            <p id="msg-retirar" class="feedback" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a class="btn btn-casino" href="casino.html">Ir a la mesa de Ruleta</a>
+    </div>
+  </main>
+  
+</body>
+</html>

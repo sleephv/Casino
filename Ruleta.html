@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta Europea - Casino</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Union.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="navbar-left">
+            <a href="Inicio.html">
+                <img src="logo.png" alt="Logo Casino" class="navbar-logo">
+            </a>
+        </div>
+        <div class="navbar-right">
+            <ul class="nav-links">
+                <li><a href="Info.html">Contacto</a></li>
+                <li><a href="Reglas.html">Reglas</a></li>
+                <li><a href="Perfil.html">Perfil</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container-fluid py-5">
+        <div class="main-container">
+            
+            <div class="row g-4 mb-4 justify-content-center align-items-center">
+                
+                <div class="col-12 col-lg-6">
+                    <h2 class="section-title text-center">Rueda de la Ruleta</h2>
+                    <div class="text-center">
+                        <img src="Ruleta.png" alt="Rueda de la Ruleta" class="img-fluid ruleta-wheel-final">
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <h2 class="section-title text-center">Mesa de Apuestas</h2>
+                    <p class="intro text-center">Estado del juego: <span id="game-status" class="badge bg-success">Recibiendo apuestas</span></p>
+                    <div class="text-center">
+                        <img src="Tablero ruleta.jpg" alt="Tablero de Ruleta" class="img-fluid ruleta-board-final">
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row g-4 align-items-center mb-4">
+                <div class="col-12 col-lg-6">
+                    <h2 class="section-title">Información del Juego</h2>
+                    <div class="card-block">
+                        <div class="saldo-card">
+                            <h3 class="section-title text-start mb-1">Saldo Disponible</h3>
+                            <div class="saldo-valor">1.500.000 CLP </div>
+                        </div>
+                    </div>
+
+                    <div class="card-block mt-3">
+                        <h3 class="section-title text-start">Últimos Ganadores</h3>
+                        <ul id="last-winners" class="list-unstyled d-flex flex-wrap justify-content-center gap-2">
+                            <li class="p-2 border rounded-circle bg-danger text-white">12</li>
+                            <li class="p-2 border rounded-circle bg-dark text-white">5</li>
+                            <li class="p-2 border rounded-circle bg-danger text-white">27</li>
+                            <li class="p-2 border rounded-circle bg-dark text-white">31</li>
+                            <li class="p-2 border rounded-circle bg-success text-white">0</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-lg-6">
+                    <h2 class="section-title text-center">Últimas 5 Apuestas</h2>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-ruleta">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Monto</th>
+                                    <th>Resultado</th>
+                                    <th>Variación de Saldo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Apuesta a color (Rojo)</td>
+                                    <td>50.000 CLP</td>
+                                    <td class="text-success">Ganada</td>
+                                    <td class="text-success">+50.000 CLP</td>
+                                </tr>
+                                <tr>
+                                    <td>Apuesta a número (15)</td>
+                                    <td>10.000 CLP</td>
+                                    <td class="text-danger">Perdida</td>
+                                    <td class="text-danger">-10.000 CLP</td>
+                                </tr>
+                                <tr>
+                                    <td>Apuesta a par</td>
+                                    <td>20.000 CLP</td>
+                                    <td class="text-danger">Perdida</td>
+                                    <td class="text-danger">-20.000 CLP</td>
+                                </tr>
+                                <tr>
+                                    <td>Apuesta a número (5)</td>
+                                    <td>10.000 CLP</td>
+                                    <td class="text-success">Ganada</td>
+                                    <td class="text-success">+350.000 CLP</td>
+                                </tr>
+                                <tr>
+                                    <td>Apuesta a docena (2da)</td>
+                                    <td>30.000 CLP</td>
+                                    <td class="text-success">Ganada</td>
+                                    <td class="text-success">+60.000 CLP</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="text-center mt-4">
+                <a href="Perfil.html" class="btn-casino">
+                    Volver a la Página de Perfil
+                </a>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>
