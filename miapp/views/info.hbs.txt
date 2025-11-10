@@ -1,0 +1,71 @@
+<div class="main-container card-container">
+
+    <h1 class="main-title">Casino ADN: La Cumbre de la Innovación en Juegos Online</h1>
+
+    <section>
+        <h2 class="section-title">Nuestra Visión de Juego</h2>
+        <p>
+            Casino ADN no es solo un sitio web; es una declaración de intenciones. Hemos redefinido la
+            experiencia de la ruleta online, llevando la sofisticación y el realismo de los casinos de élite
+            directamente a tu pantalla. Con una interfaz impecable y una simulación europea de alta fidelidad,
+            te sumergirás en un juego fluido, seguro y, sobre todo, emocionante.Cada línea de código y cada
+            elemento de diseño fueron creados con un objetivo: ofrecer la plataforma de casino más superior y
+            confiable. Usando las tecnologías más avanzadas de <strong>HTML</strong> y <strong>CSS</strong>, hemos construido un
+            sistema que no solo funciona, sino que deslumbra.
+        </p>
+    </section>
+
+    <section>
+        <h2 class="section-title">Los Genios Detrás de la Creación</h2>
+        <p>
+            Todo casino presume de su staff. El nuestro mezcla desarrolladores con
+            títulos de fantasía en empresas que cualquiera soñaría en su currículum.
+        </p>
+        <div class="equipo">
+            <article class="desarrollador card-block">
+                <img src="/images/yo.jpg" alt="Nicolas Cuevas" class="desarrollador-img">
+                <h3>Nicolas Cuevas</h3>
+                <p>
+                    Creador y desarrollador principal de la marca NVIDIA. Participante en la creación de HTML
+                    y CSS. Apasionado por la tecnología y el desarrollo web. Trabajó para grandes empresas
+                    como Google y Microsoft.
+                </p>
+            </article>
+
+            <article class="desarrollador card-block">
+                <img src="/images/diego.jpeg" alt="Diego Peñailillo" class="desarrollador-img">
+                <h3>Diego Peñailillo</h3>
+                <p>
+                    Experto en OPENAI y ChatGPT. Ha trabajado en proyectos de inteligencia artificial, creó
+                    los sistemas operativos de Apple y Linux. Apasionado por la tecnología y el desarrollo web.
+                    Ha trabajado en la creación de IA tales como Gemini, DeepSeek, entre otros.
+                </p>
+            </article>
+
+            <article class="desarrollador card-block">
+                <img src="/images/anton.jpeg" alt="Antón Abal" class="desarrollador-img">
+                <h3>Antón Abal</h3>
+                <p>
+                    Fundador de la empresa SpaceX y cofundador de Tesla. Ingeniero aeroespacial y físico.
+                    Apasionado por la tecnología y el desarrollo web. Ha trabajado en proyectos como la creación
+                    de diferentes casinos online tales como Betano, RojaBet, JugaBet, entre otros.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Compromiso Total con la Excelencia</h2>
+        <p>
+            La web se levanta con HTML5 y CSS3 en una sola hoja de estilos, como si fuera el motor secreto
+            del casino. El diseño usa grids, paneles y una paleta burdeos/dorada típica de ambientes de lujo.
+            Encontrarás todo lo que esperas: página de registro, reglas claras, perfiles de jugadores,
+            historial de transacciones y una mesa de ruleta que recrea la experiencia visual. Todo listo
+            para que la sensación sea la de un verdadero casino virtual.
+        </p>
+        <p>
+            Este proyecto es académico. Ninguna apuesta es real, pero la experiencia visual está hecha para parecerlo.
+        </p>
+    </section>
+
+</div>

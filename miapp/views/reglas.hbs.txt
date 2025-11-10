@@ -1,0 +1,111 @@
+<div class="reglas-container card-container">
+
+    <h1 class="main-title">Reglas de la Ruleta </h1>
+    <p class="intro">
+        Todo lo que necesitas saber para jugar con responsabilidad: funcionamiento básico, tipos de apuesta, probabilidades y pagos.
+    </p>
+
+    <section class="regla-seccion">
+        <h2 class="section-title">1) Reglas del juego</h2>
+        <ul class="list-ruleta">
+            <li>La ruleta cuenta con casillas numeradas del <strong>0 al 36</strong> (europea). La versión americana añade el <strong>00</strong>.</li>
+            <li>El crupier hace girar la ruleta y lanza la bola. Puedes apostar hasta que anuncie <em>“no va más”</em>.</li>
+            <li>Ganas si la bola cae en el número o grupo de números al que apostaste.</li>
+            <li>El <strong>0/00</strong> da ventaja a la banca: no es rojo/negro, par/impar, ni falta/pasa.</li>
+        </ul>
+    </section>
+
+    <section class="regla-seccion">
+        <h2 class="section-title">2) Tipos de apuesta</h2>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="apuesta-item"><strong>Pleno</strong> — un número (pago <strong>35:1</strong>).</div>
+                <div class="apuesta-item"><strong>Caballo</strong> — dos números adyacentes (pago <strong>17:1</strong>).</div>
+                <div class="apuesta-item"><strong>Calle</strong> — tres números en fila (pago <strong>11:1</strong>).</div>
+                <div class="apuesta-item"><strong>Cuadro</strong> — bloque de cuatro números (pago <strong>8:1</strong>).</div>
+            </div>
+            <div class="col-md-6">
+                <div class="apuesta-item"><strong>Línea</strong> — seis números (pago <strong>5:1</strong>).</div>
+                <div class="apuesta-item"><strong>Docena / Columna</strong> — 12 números (pago <strong>2:1</strong>).</div>
+                <div class="apuesta-item"><strong>Simples</strong> — Rojo/Negro, Par/Impar, Falta (1–18) / Pasa (19–36) (pago <strong>1:1</strong>).</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="regla-seccion">
+        <h2 class="section-title">3) Probabilidades y pagos</h2>
+        <p class="lead-muted">
+            La <strong>ruleta europea</strong> tiene 37 casillas (0–36). La <strong>americana</strong> tiene 38 (00, 0–36).
+        </p>
+        <div class="table-responsive">
+            <table class="table table-ruleta align-middle text-center">
+                <thead>
+                    <tr>
+                        <th>Tipo de apuesta</th>
+                        <th>Pago</th>
+                        <th>Prob. Europea</th>
+                        <th>Prob. Americana</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pleno (1 número)</td>
+                        <td>35:1</td>
+                        <td>1 / 37 ≈ 2.70%</td>
+                        <td>1 / 38 ≈ 2.63%</td>
+                    </tr>
+                    <tr>
+                        <td>Caballo (2 números)</td>
+                        <td>17:1</td>
+                        <td>2 / 37 ≈ 5.41%</td>
+                        <td>2 / 38 ≈ 5.26%</td>
+                    </tr>
+                    <tr>
+                        <td>Calle (3 números)</td>
+                        <td>11:1</td>
+                        <td>3 / 37 ≈ 8.11%</td>
+                        <td>3 / 38 ≈ 7.89%</td>
+                    </tr>
+                    <tr>
+                        <td>Cuadro (4 números)</td>
+                        <td>8:1</td>
+                        <td>4 / 37 ≈ 10.81%</td>
+                        <td>4 / 38 ≈ 10.53%</td>
+                    </tr>
+                    <tr>
+                        <td>Línea (6 números)</td>
+                        <td>5:1</td>
+                        <td>6 / 37 ≈ 16.22%</td>
+                        <td>6 / 38 ≈ 15.79%</td>
+                    </tr>
+                    <tr>
+                        <td>Docena / Columna (12 números)</td>
+                        <td>2:1</td>
+                        <td>12 / 37 ≈ 32.43%</td>
+                        <td>12 / 38 ≈ 31.58%</td>
+                    </tr>
+                    <tr>
+                        <td>Simples (Rojo/Negro, etc.)</td>
+                        <td>1:1</td>
+                        <td>18 / 37 ≈ 48.65%</td>
+                        <td>18 / 38 ≈ 47.37%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="regla-seccion">
+        <h2 class="section-title">4) Consejos de juego responsable</h2>
+        <ul class="list-ruleta">
+            <li><strong>Fija un presupuesto</strong> antes de jugar y respétalo.</li>
+            <li><strong>Haz pausas</strong>. Evita “perseguir pérdidas”.</li>
+            <li>Recuerda: la ruleta es <strong>azar</strong>; no existen sistemas infalibles.</li>
+            <li>Si deja de ser divertido, <strong>detente y busca apoyo</strong>.</li>
+        </ul>
+        <div class="text-center mt-4">
+            <a class="btn btn-casino" href="/">Volver al inicio</a>
+        </div>
+    </section>
+
+</div>

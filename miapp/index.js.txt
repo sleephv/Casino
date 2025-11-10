@@ -1,0 +1,302 @@
+const express = require('express');
+const { engine } = require('express-handlebars');
+const path = require('path');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
+const User = require('./models/User');
+const Transaccion = require('./models/Transaccion');
+
+const app = express();
+const PORT = process.env.PORT || 80;
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.use(session({
+    secret: 'mi_secreto_para_el_casino_web',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60 * 60 * 1000 }
+}));
+
+app.use((req, res, next) => {
+    res.locals.user = req.session.user;
+    next();
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+const mapaRuleta = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+const rojos = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
+
+app.engine('.hbs', engine({
+    extname: '.hbs',
+    defaultLayout: 'main',
+    layoutsDir: path.join(__dirname, 'views/layouts'),
+    helpers: {
+        substring: function (string, start, end) {
+            if (string) return string.substring(start, end);
+            return '';
+        },
+        formatDate: (date) => {
+            if (!date) return '';
+            return new Date(date).toLocaleDateString('es-CL');
+        },
+        formatAmount: function (amount) {
+            if (amount > 0) return `+${amount} CLP`;
+            return `${amount} CLP`;
+        },
+        amountClass: function (amount) {
+            if (amount > 0) return 'text-success';
+            if (amount < 0) return 'text-danger';
+            return '';
+        },
+        range: (start, end) => {
+            const arr = [];
+            for (let i = start; i <= end; i++) {
+                arr.push(i);
+            }
+            return arr;
+        },
+        isRojo: (number) => {
+            return rojos.includes(parseInt(number, 10));
+        },
+        lookup: (arr, index) => {
+            return arr[index];
+        }
+    },
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    },
+}));
+
+app.set('view engine', '.hbs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.get('/', (req, res) => { res.render('inicio', { title: 'Bienvenido' }); });
+app.get('/registro', (req, res) => { res.render('login', { title: 'Registro de Usuario' }); });
+app.get('/acceso', (req, res) => { res.render('acceso', { title: 'Acceso al Casino' }); });
+app.get('/reglas', (req, res) => { res.render('reglas', { title: 'Reglas del Juego' }); });
+app.get('/info', (req, res) => { res.render('info', { title: 'Acerca de Nosotros' }); });
+
+app.post('/registro', async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+        if (!username || !email || !password) { return res.status(400).send('Faltan datos'); }
+        const userExists = await User.findOne({ $or: [{ username }, { email }] });
+        if (userExists) { return res.send('El nombre de usuario o el email ya están registrados.'); }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const newUser = new User({ username, email, password: hashedPassword });
+        await newUser.save();
+        res.redirect('/');
+    } catch (error) { console.error(error); res.send('Error al registrar el usuario.'); }
+});
+
+app.post('/acceso', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username }).lean();
+        if (!user) { return res.send('Credenciales inválidas.'); }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) { return res.send('Credenciales inválidas.'); }
+        req.session.user = user;
+        req.session.currentRotation = 0;
+        res.redirect('/perfil');
+    } catch (error) { console.error(error); res.send('Error al iniciar sesión.'); }
+});
+
+const isAuthenticated = (req, res, next) => {
+    if (req.session.user) {
+        return next();
+    }
+    res.redirect('/acceso');
+};
+
+app.get('/perfil', isAuthenticated, async (req, res) => {
+    try {
+        const transactions = await Transaccion.find({ userId: req.session.user._id })
+            .sort({ timestamp: -1 })
+            .limit(5)
+            .lean();
+            
+        res.render('perfil', { 
+            title: 'Mi Perfil', 
+            transactions
+        });
+    } catch (error) {
+        console.error(error);
+        res.send('Error al cargar el perfil.');
+    }
+});
+
+app.get('/ruleta', isAuthenticated, async (req, res) => {
+    try {
+        const gameTransactions = await Transaccion.find({
+            userId: req.session.user._id,
+            type: { $in: ['Apuesta', 'Ganancia'] }
+        })
+        .sort({ timestamp: -1 })
+        .limit(5)
+        .lean();
+        
+        res.render('ruleta', {
+            title: 'Ruleta Europea',
+            transactions: gameTransactions,
+            mapaRuleta: mapaRuleta
+        });
+    } catch (error) {
+        console.error(error);
+        res.send('Error al cargar la ruleta.');
+    }
+});
+
+app.get('/transaccion', isAuthenticated, (req, res) => { res.render('transaccion', { title: 'Transacciones' }); });
+
+app.post('/transaccion/depositar', isAuthenticated, async (req, res) => {
+    try {
+        const amount = parseInt(req.body.amount, 10);
+        if (isNaN(amount) || amount <= 0) { return res.status(400).send('Monto inválido.'); }
+        const userId = req.session.user._id;
+        const updatedUser = await User.findByIdAndUpdate(userId, { $inc: { balance: amount } }, { new: true }).lean();
+        const newTransaction = new Transaccion({ userId, type: 'Depósito', amount });
+        await newTransaction.save();
+        req.session.user.balance = updatedUser.balance;
+        res.redirect('/transaccion');
+    } catch (error) { console.error(error); res.send('Error al procesar el depósito.'); }
+});
+
+app.post('/transaccion/retirar', isAuthenticated, async (req, res) => {
+    try {
+        const amount = parseInt(req.body.amount, 10);
+        if (isNaN(amount) || amount <= 0) { return res.status(400).send('Monto inválido.'); }
+        const userId = req.session.user._id;
+        const user = await User.findById(userId);
+        if (user.balance < amount) { return res.status(400).send('Saldo insuficiente.'); }
+        const newTransaction = new Transaccion({ userId, type: 'Retiro', amount: -amount });
+        await newTransaction.save();
+        user.balance -= amount;
+        await user.save();
+        req.session.user.balance = user.balance;
+        res.redirect('/transaccion');
+    } catch (error) { console.error(error); res.send('Error al procesar el retiro.'); }
+});
+
+app.post('/ruleta/girar', isAuthenticated, async (req, res) => {
+    try {
+        const { apuesta, monto } = req.body;
+        const montoNum = parseInt(monto, 10);
+        const userId = req.session.user._id;
+        const user = await User.findById(userId);
+
+        if (isNaN(montoNum) || montoNum <= 0) return res.status(400).json({ message: 'Monto inválido.' });
+        if (user.balance < montoNum) return res.status(400).json({ message: 'Saldo insuficiente.' });
+
+        user.balance -= montoNum;
+        const transaccionApuesta = new Transaccion({ userId, type: 'Apuesta', amount: -montoNum });
+        await transaccionApuesta.save();
+
+        const numeroGanador = Math.floor(Math.random() * 37);
+        let colorGanador;
+
+        if (numeroGanador === 0) {
+            colorGanador = 'verde';
+        } else if (rojos.includes(numeroGanador)) {
+            colorGanador = 'rojo';
+        } else {
+            colorGanador = 'negro';
+        }
+
+        let ganancia = 0;
+        let mensaje = `El número ganador es ${numeroGanador}. Perdiste ${montoNum} CLP.`;
+        
+        const tipoApuesta = apuesta.split('-')[0];
+        const valorApuesta = apuesta.split('-')[1];
+
+        if (tipoApuesta === 'numero' && parseInt(valorApuesta, 10) === numeroGanador) {
+            ganancia = montoNum * 36;
+        } else if (apuesta === 'rojo' && colorGanador === 'rojo') {
+            ganancia = montoNum * 2;
+        } else if (apuesta === 'negro' && colorGanador === 'negro') {
+            ganancia = montoNum * 2;
+        } else if (apuesta === 'par' && numeroGanador !== 0 && numeroGanador % 2 === 0) {
+            ganancia = montoNum * 2;
+        } else if (apuesta === 'impar' && numeroGanador % 2 !== 0) {
+            ganancia = montoNum * 2;
+        } else if (apuesta === 'bajos' && numeroGanador >= 1 && numeroGanador <= 18) {
+            ganancia = montoNum * 2;
+        } else if (apuesta === 'altos' && numeroGanador >= 19 && numeroGanador <= 36) {
+            ganancia = montoNum * 2;
+        } else if (apuesta === 'docena-1' && numeroGanador >= 1 && numeroGanador <= 12) {
+            ganancia = montoNum * 3;
+        } else if (apuesta === 'docena-2' && numeroGanador >= 13 && numeroGanador <= 24) {
+            ganancia = montoNum * 3;
+        } else if (apuesta === 'docena-3' && numeroGanador >= 25 && numeroGanador <= 36) {
+            ganancia = montoNum * 3;
+        } else if (apuesta === 'columna-1' && [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34].includes(numeroGanador)) {
+            ganancia = montoNum * 3;
+        } else if (apuesta === 'columna-2' && [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35].includes(numeroGanador)) {
+            ganancia = montoNum * 3;
+        } else if (apuesta === 'columna-3' && [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36].includes(numeroGanador)) {
+            ganancia = montoNum * 3;
+        }
+
+        if (ganancia > 0) {
+            user.balance += ganancia;
+            mensaje = `¡Ganaste! El número es ${numeroGanador}. Recibes ${ganancia} CLP.`;
+            const transaccionGanancia = new Transaccion({ userId, type: 'Ganancia', amount: ganancia });
+            await transaccionGanancia.save();
+        }
+
+        await user.save();
+        req.session.user.balance = user.balance;
+
+        const posicionGanadora = mapaRuleta.indexOf(numeroGanador);
+        const gradosPorCasilla = 360 / 37;
+        const anguloCentroCasilla = (posicionGanadora * gradosPorCasilla) + (gradosPorCasilla / 2);
+        
+        const vueltasExtra = 5 * 360;
+        const offsetAleatorio = (Math.random() - 0.5) * (gradosPorCasilla * 0.4);
+        
+        const anguloFinalRelativo = 360 - anguloCentroCasilla;
+
+        let currentRotation = req.session.currentRotation || 0;
+        
+        const ultimaVueltaCompleta = Math.ceil(currentRotation / 360) * 360;
+
+        const gradosFinales = ultimaVueltaCompleta + vueltasExtra + anguloFinalRelativo + offsetAleatorio;
+        
+        req.session.currentRotation = gradosFinales;
+        
+        res.json({
+            mensaje,
+            numeroGanador,
+            nuevoSaldo: user.balance,
+            gradosFinales,
+        });
+    } catch (error) {
+        console.warn('Error en la jugada de ruleta:', error);
+        res.status(500).json({ message: 'Error en el servidor.' });
+    }
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) { return res.send("Error al cerrar sesión"); }
+        res.redirect('/');
+    });
+});
+
+const MONGO_URI = 'deben poner su link de mongo';
+mongoose.connect(MONGO_URI.replace('<db_password>', 'su clave'))
+    .then(() => {
+        console.log(' Conexión exitosa a MongoDB Atlas');
+        app.listen(PORT, () => {
+            console.log(` Servidor corriendo en http://localhost:${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error(' Error conectando a MongoDB:', err);
+    });

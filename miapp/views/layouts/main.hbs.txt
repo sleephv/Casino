@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{title}} - Casino Virtual ADN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/Union.css" />
+</head>
+<body id="top">
+
+    {{#if user}}
+        <nav class="navbar" role="navigation" aria-label="Menú principal">
+            <div class="navbar-left">
+                <a href="/">
+                    <img src="/images/logo.jpg" alt="Logo Casino" class="navbar-logo">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/ruleta">Ruleta</a></li>
+                <li><a href="/transaccion">Transacciones</a></li>
+                <li><a href="/perfil">Perfil</a></li>
+                <li><a href="/reglas">Reglas</a></li>
+                <li><a href="/info">Contacto</a></li>
+                <li><a href="/logout">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    {{else}}
+        <nav class="navbar" role="navigation" aria-label="Menú principal">
+            <div class="navbar-left">
+                <a href="/">
+                    <img src="/images/logo.jpg" alt="Logo Casino" class="navbar-logo">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/reglas">Reglas</a></li>
+                <li><a href="/info">Contacto</a></li>
+                <li><a href="/registro">Registrarse</a></li>
+                <li><a href="/acceso">Acceder</a></li>
+            </ul>
+        </nav>
+    {{/if}}
+
+    <main class="container py-4">
+        {{{body}}}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

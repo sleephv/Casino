@@ -1,0 +1,59 @@
+<div class="perfil-container card-container">
+    <h1 class="main-title">Perfil de Usuario</h1>
+    <p class="intro">Aquí puedes ver tu información, saldo y últimas transacciones.</p>
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-6">
+            <section class="card-block">
+                <h2 class="section-title">Información personal</h2>
+                <div class="perfil-header">
+                    <div class="avatar" aria-hidden="true">{{#if user.username}}{{substring user.username 0 2}}{{else}}--{{/if}}</div>
+                    <div>
+                        <p class="perfil-line"><span class="label">Usuario:</span> <span class="value">{{user.username}}</span></p>
+                        <p class="perfil-line"><span class="label">Correo:</span> <span class="value">{{user.email}}</span></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <section class="card-block saldo-card">
+                <h2 class="section-title">Saldo actual</h2>
+                <div class="saldo-valor" aria-label="Saldo actual">{{user.balance}} CLP</div>
+                <div class="saldo-actions">
+                    <a class="btn btn-casino" href="/ruleta">Ir a la mesa de Ruleta</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-12">
+            <section class="card-block">
+                <h2 class="section-title">Últimas 5 transacciones</h2>
+                <div class="table-responsive">
+                    <table class="table table-cuenta align-middle text-center">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each transactions}}
+                            <tr>
+                                <td>{{formatDate this.timestamp}}</td>
+                                <td>{{this.type}}</td>
+                                <td class="{{amountClass this.amount}}">{{formatAmount this.amount}}</td>
+                            </tr>
+                            {{else}}
+                            <tr>
+                                <td colspan="3">No hay transacciones recientes.</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

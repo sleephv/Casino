@@ -1,0 +1,11 @@
+<div class="reglas-container">
+  <h2 class="section-title">Acceso al casino</h2>
+  
+  <form action="/acceso" method="POST">
+    <input type="text" class="form-control mb-3" placeholder="Nombre de usuario" name="username" required>
+    <input type="password" class="form-control mb-3" placeholder="Contraseña" name="password" required>
+    <div class="text-center">
+      <button type="submit" class="btn-casino mt-4">Acceder</button>
+    </div>
+  </form>
+</div>

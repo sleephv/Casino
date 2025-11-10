@@ -1,0 +1,106 @@
+Ruleta.js
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Seleccionamos todos los elementos con los que vamos a interactuar
+    const tablero = document.getElementById('tablero');
+    const celdasApostables = tablero.querySelectorAll('.numero, .apuesta-externa');
+    const btnGirar = document.getElementById('btn-girar');
+    const montoInput = document.getElementById('monto-apuesta');
+    const saldoDisplay = document.getElementById('saldo-usuario');
+    const mensajeDisplay = document.getElementById('mensaje');
+    const infoApuestaDisplay = document.getElementById('info-apuesta');
+    const infoMontoDisplay = document.getElementById('info-monto');
+    const ruletaCirculo = document.getElementById('ruleta-circulo');
+
+    // Variables para guardar el estado del juego
+    let apuestaActual = null;
+    let montoActual = 0;
+    let puedeGirar = true;
+
+    // Función para actualizar la UI con la apuesta seleccionada
+    function seleccionarApuesta(celda) {
+        // Limpiamos la selección anterior
+        celdasApostables.forEach(c => c.classList.remove('apostado'));
+
+        // Marcamos la nueva celda como apostada
+        celda.classList.add('apostado');
+        apuestaActual = celda.dataset.apuesta;
+        montoActual = parseInt(montoInput.value, 10);
+
+        // Actualizamos el panel de información
+        infoApuestaDisplay.textContent = apuestaActual;
+        infoMontoDisplay.textContent = montoActual;
+        mensajeDisplay.textContent = '¡Listo para girar!';
+    }
+
+    // Añadimos un "escuchador" de clics a cada celda apostable
+celdasApostables.forEach(celda => {
+        celda.addEventListener('click', () => {
+            if (puedeGirar) {
+                seleccionarApuesta(celda);
+            }
+        });
+    });
+
+    // Función que se ejecuta al hacer clic en "Girar"
+    async function girarRuleta() {
+        if (!apuestaActual || montoActual <= 0) {
+            mensajeDisplay.textContent = 'Por favor, selecciona una apuesta y un monto válidos.';
+            return;
+        }
+
+        if (!puedeGirar) return;
+        puedeGirar = false;
+        btnGirar.disabled = true;
+        mensajeDisplay.textContent = '¡La ruleta está girando!';
+
+        // Nos comunicamos con el servidor para que haga la lógica real
+        try {
+            const response = await fetch('/ruleta/girar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    apuesta: apuestaActual,
+                    monto: montoActual
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error en la apuesta.');
+            }
+
+            const resultado = await response.json();
+
+            // Animación de giro
+            // Los grados se calculan en el servidor para que coincidan con el resultado
+            ruletaCirculo.style.transition = 'transform 5s cubic-bezier(0.25, 1, 0.5, 1)';
+            ruletaCirculo.style.transform = `rotate(${resultado.gradosFinales}deg)`;
+
+            // Esperamos a que la animación termine para mostrar el resultado
+            setTimeout(() => {
+                mensajeDisplay.textContent = resultado.mensaje;
+                saldoDisplay.textContent = resultado.nuevoSaldo;
+
+                // Reseteamos para la siguiente ronda
+                apuestaActual = null;
+                celdasApostables.forEach(c => c.classList.remove('apostado'));
+                infoApuestaDisplay.textContent = 'Ninguna';
+                infoMontoDisplay.textContent = '0';
+
+                puedeGirar = true;
+                btnGirar.disabled = false;
+            }, 5500); // Un poco más que la duración de la animación
+
+        } catch (error) {
+            mensajeDisplay.textContent = error.message;
+            puedeGirar = true;
+            btnGirar.disabled = false;
+        }
+    }
+
+    // Añadimos el "escuchador" de clic al botón de girar
+    btnGirar.addEventListener('click', girarRuleta);
+});

@@ -1,0 +1,131 @@
+<div class="ruleta-container card-container">
+    <h1 class="main-title">Mesa de Ruleta Europea</h1>
+    <p class="intro">Coloca tu apuesta en el tablero y presiona "Girar". ¡Mucha suerte!</p>
+
+    <div class="panel-control">
+        <div class="saldo-display">
+            <strong>Tu Saldo:</strong> <span id="saldo-usuario">{{user.balance}}</span> CLP
+        </div>
+        <div id="mensaje" class="mensaje-ruleta">
+            Selecciona una apuesta y un monto.
+        </div>
+        <div class="apuesta-actual">
+            <strong>Apuesta:</strong> <span id="info-apuesta">Ninguna</span> |
+            <strong>Monto:</strong> <span id="info-monto">0</span> CLP
+        </div>
+    </div>
+
+    <div class="mesa-ruleta">
+        <div class="rueda-container">
+            <div id="ruleta-circulo" class="ruleta-circulo">
+                {{#each (range 0 36)}}
+                <div class="segmento">
+                    <div class="numero-texto">{{lookup ../mapaRuleta this}}</div>
+                </div>
+                {{/each}}
+                <div class="ruleta-centro"></div>
+            </div>
+        </div>
+
+        <div id="tablero-container" class="tablero-container">
+            <div class="numeros-grid-wrapper">
+                <div class="numero cero" data-apuesta="numero-0">0</div>
+                <div class="numeros-grid">
+                    <!-- Fila Superior (3, 6, 9...) -->
+                    <div class="numero rojo" data-apuesta="numero-3">3</div>
+                    <div class="numero negro" data-apuesta="numero-6">6</div>
+                    <div class="numero rojo" data-apuesta="numero-9">9</div>
+                    <div class="numero rojo" data-apuesta="numero-12">12</div>
+                    <div class="numero negro" data-apuesta="numero-15">15</div>
+                    <div class="numero rojo" data-apuesta="numero-18">18</div>
+                    <div class="numero rojo" data-apuesta="numero-21">21</div>
+                    <div class="numero negro" data-apuesta="numero-24">24</div>
+                    <div class="numero rojo" data-apuesta="numero-27">27</div>
+                    <div class="numero rojo" data-apuesta="numero-30">30</div>
+                    <div class="numero negro" data-apuesta="numero-33">33</div>
+                    <div class="numero rojo" data-apuesta="numero-36">36</div>
+                    <!-- Fila del Medio (2, 5, 8...) -->
+                    <div class="numero negro" data-apuesta="numero-2">2</div>
+                    <div class="numero rojo" data-apuesta="numero-5">5</div>
+                    <div class="numero negro" data-apuesta="numero-8">8</div>
+                    <div class="numero negro" data-apuesta="numero-11">11</div>
+                    <div class="numero rojo" data-apuesta="numero-14">14</div>
+                    <div class="numero negro" data-apuesta="numero-17">17</div>
+                    <div class="numero negro" data-apuesta="numero-20">20</div>
+                    <div class="numero rojo" data-apuesta="numero-23">23</div>
+                    <div class="numero negro" data-apuesta="numero-26">26</div>
+                    <div class="numero negro" data-apuesta="numero-29">29</div>
+                    <div class="numero rojo" data-apuesta="numero-32">32</div>
+                    <div class="numero negro" data-apuesta="numero-35">35</div>
+                    <!-- Fila Inferior (1, 4, 7...) -->
+                    <div class="numero rojo" data-apuesta="numero-1">1</div>
+                    <div class="numero negro" data-apuesta="numero-4">4</div>
+                    <div class="numero rojo" data-apuesta="numero-7">7</div>
+                    <div class="numero negro" data-apuesta="numero-10">10</div>
+                    <div class="numero negro" data-apuesta="numero-13">13</div>
+                    <div class="numero rojo" data-apuesta="numero-16">16</div>
+                    <div class="numero rojo" data-apuesta="numero-19">19</div>
+                    <div class="numero negro" data-apuesta="numero-22">22</div>
+                    <div class="numero rojo" data-apuesta="numero-25">25</div>
+                    <div class="numero negro" data-apuesta="numero-28">28</div>
+                    <div class="numero negro" data-apuesta="numero-31">31</div>
+                    <div class="numero rojo" data-apuesta="numero-34">34</div>
+                </div>
+                <div class="apuestas-inferiores-grid">
+                    <div class="apuesta-externa" data-apuesta="docena-1">1ra 12</div>
+                    <div class="apuesta-externa" data-apuesta="docena-2">2da 12</div>
+                    <div class="apuesta-externa" data-apuesta="docena-3">3ra 12</div>
+                    <div class="apuesta-externa" data-apuesta="bajos">1-18</div>
+                    <div class="apuesta-externa" data-apuesta="par">PAR</div>
+                    <div class="apuesta-externa rojo" data-apuesta="rojo"></div>
+                    <div class="apuesta-externa negro" data-apuesta="negro"></div>
+                    <div class="apuesta-externa" data-apuesta="impar">IMPAR</div>
+                    <div class="apuesta-externa" data-apuesta="altos">19-36</div>
+                </div>
+            </div>
+            <div class="columnas-grid">
+                <div class="apuesta-externa" data-apuesta="columna-3">2:1</div>
+                <div class="apuesta-externa" data-apuesta="columna-2">2:1</div>
+                <div class="apuesta-externa" data-apuesta="columna-1">2:1</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-apuesta">
+        <label for="monto-apuesta">Monto a Apostar:</label>
+        <input type="number" id="monto-apuesta" class="form-control" value="1000" min="100" step="100">
+        <button id="btn-girar" class="btn btn-casino">Girar</button>
+    </div>
+
+    <hr>
+
+    <div class="card-block mt-4">
+        <h2 class="section-title">Historial de Jugadas</h2>
+        <div class="table-responsive">
+            <table class="table table-cuenta text-center">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each transactions}}
+                    <tr>
+                        <td>{{formatDate this.timestamp}}</td>
+                        <td>{{this.type}}</td>
+                        <td class="{{amountClass this.amount}}">{{formatAmount this.amount}}</td>
+                    </tr>
+                    {{else}}
+                    <tr>
+                        <td colspan="3">No has realizado ninguna apuesta todavía.</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/js/Ruleta.js"></script>

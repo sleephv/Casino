@@ -1,0 +1,34 @@
+<header class="main-header">
+    <h1>Bienvenido al Casino Virtual ADN 🎰</h1>
+    <p>Selecciona una opción:</p>
+    <div class="options">
+        <a href="/registro" class="btn-casino">
+            <svg width="20" height="20" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+            Registro de Usuario
+        </a>
+        <a href="/acceso" class="btn-casino">
+            <svg width="20" height="20" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                <path d="M4 12h16M12 4l8 8-8 8" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+            Acceso al Casino
+        </a>
+        <a href="/info" class="btn-casino">
+            <svg width="20" height="20" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="16" r="1" fill="currentColor"/>
+            </svg>
+            Información sobre App
+        </a>
+        <a href="/reglas" class="btn-casino">
+            <svg width="20" height="20" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                <line x1="12" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Reglas de la Ruleta
+        </a>
+    </div>
+</header>
